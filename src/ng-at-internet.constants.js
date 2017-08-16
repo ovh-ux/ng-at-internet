@@ -36,5 +36,13 @@ angular.module("ng-at-internet")
         event: {
             path: "site.6", // OVH's AtInternet configuration
             format: "[%s]"
+        },
+
+    /**
+     * Project Number
+     */
+        projectNumber: {
+            path: "site.9", // OVH's AtInternet configuration
+            format: "[%s]"
         }
     });

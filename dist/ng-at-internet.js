@@ -40,6 +40,14 @@ angular.module("ng-at-internet")
         event: {
             path: "site.6", // OVH's AtInternet configuration
             format: "[%s]"
+        },
+
+    /**
+     * Project Number
+     */
+        projectNumber: {
+            path: "site.9", // OVH's AtInternet configuration
+            format: "[%s]"
         }
     });
 
@@ -392,18 +400,19 @@ angular.module("ng-at-internet")
              *
              * ```
              * productData {
-             *   name: "your-product"  // the product identifier (required)
-             *   page: "your-page"     // page associated with the order (required)
-             *                         //   WARNING: the page must be configured in ATInternet manager
-             *                         //   to be a main objective page.
-             *   level2: "1"           // the project id (required)
-             *   price: 42             // price of product tax included (required only if priceTaxFree not supplied)
-             *   priceTaxFree: 42      // price of product tax free (required only if price is not supplied)
-             *   orderId: 1            // unique order ID, you can provide it or it will be automatically generated
-             *   quantity: 1           // amount of product (default is 1)
+             *   name: "your-product"               // the product identifier (required)
+             *   page: "your-page"                  // page associated with the order (required)
+             *                                      //   WARNING: the page must be configured in ATInternet manager
+             *                                      //   to be a main objective page.
+             *   level2: "1"                        // the project id (required)
+             *   price: 42                          // price of product tax included (required only if priceTaxFree not supplied)
+             *   priceTaxFree: 42                   // price of product tax free (required only if price is not supplied)
+             *   orderId: 1                         // unique order ID, you can provide it or it will be automatically generated
+             *   quantity: 1                        // amount of product (default is 1)
              *
-             *   countryCode: "EU"     // country code identifier of the customer (optional)
-             *   currencyCode: "EU"    // currency of order (optional)
+             *   countryCode: "EU"                  // country code identifier of the customer (optional)
+             *   currencyCode: "EU"                 // currency of order (optional)
+             *   projectNumber: "[CloudProject-40]" //Number of project (optional)
              * }
              * ```
              *
