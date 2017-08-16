@@ -47,18 +47,19 @@ Click data is the following data-structure :</p>
 <div class="trackorder"><div class="trackorder-page"><p>Simplified tracking of product order.
 Product data is the following data-structure :</p>
 <pre><code>productData {
-  name: &quot;your-product&quot;  // the product identifier (required)
-  page: &quot;your-page&quot;     // page associated with the order (required)
-                        //   WARNING: the page must be configured in ATInternet manager
-                        //   to be a main objective page.
-  level2: &quot;1&quot;           // the project id (required)
-  price: 42             // price of product tax included (required only if priceTaxFree not supplied)
-  priceTaxFree: 42      // price of product tax free (required only if price is not supplied)
-  orderId: 1            // unique order ID, you can provide it or it will be automatically generated
-  quantity: 1           // amount of product (default is 1)
+  name: &quot;your-product&quot;               // the product identifier (required)
+  page: &quot;your-page&quot;                  // page associated with the order (required)
+                                     //   WARNING: the page must be configured in ATInternet manager
+                                     //   to be a main objective page.
+  level2: &quot;1&quot;                        // the project id (required)
+  price: 42                          // price of product tax included (required only if priceTaxFree not supplied)
+  priceTaxFree: 42                   // price of product tax free (required only if price is not supplied)
+  orderId: 1                         // unique order ID, you can provide it or it will be automatically generated
+  quantity: 1                        // amount of product (default is 1)
 
-  countryCode: &quot;EU&quot;     // country code identifier of the customer (optional)
-  currencyCode: &quot;EU&quot;    // currency of order (optional)
+  countryCode: &quot;EU&quot;                  // country code identifier of the customer (optional)
+  currencyCode: &quot;EU&quot;                 // currency of order (optional)
+  projectNumber: &quot;[CloudProject-40]&quot; //Number of project (optional)
 }
 </code></pre><p>More informations here :
 <a href="http://developers.atinternet-solutions.com/javascript-fr/">http://developers.atinternet-solutions.com/javascript-fr/</a></p>
