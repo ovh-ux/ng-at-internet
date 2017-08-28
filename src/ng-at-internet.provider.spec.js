@@ -19,6 +19,10 @@ describe("AtInternet provider unit testing", function () {
 
     tagMock.prototype.dispatch = jasmine.createSpy();
 
+    tagMock.prototype.identifiedVisitor = {
+        set: jasmine.createSpy()
+    };
+
     tagMock.prototype.page = {
         set: function (data) {
             tagMockPageData = data;
@@ -85,8 +89,25 @@ describe("AtInternet provider unit testing", function () {
             expect(atInternet.getConfig()).toEqual({
                 enabled: true,
                 debug: true,
+                identifiedVisitor: {},
                 defaults: {
                     foo: "bar"
+                }
+            });
+        });
+
+        it("should have a valid config with identifiedVisitor", function () {
+            atInternet.setIdentifiedVisitor({
+                id: 1234
+            });
+            expect(atInternet.getConfig()).toEqual({
+                enabled: true,
+                debug: true,
+                defaults: {
+                    foo: "bar"
+                },
+                identifiedVisitor: {
+                    id: 1234
                 }
             });
         });
@@ -100,6 +121,7 @@ describe("AtInternet provider unit testing", function () {
             expect(atInternet.getConfig()).toEqual({
                 enabled: true,
                 debug: true,
+                identifiedVisitor: {},
                 defaults: {
                     foo: "newValue",
                     foo2: "bar2"
@@ -119,6 +141,7 @@ describe("AtInternet provider unit testing", function () {
                     return $window;
                 });
                 atInternetProvider.setEnabled(true);
+                atInternetProvider.setIdentifiedVisitor({});
                 atInternetProvider.setDefaults({
                     countryCode: "defaultCountry"
                 });
@@ -138,7 +161,6 @@ describe("AtInternet provider unit testing", function () {
         });
 
         describe("track page", function () {
-
             it("track page", function () {
                 atInternet.trackPage({
                     name: "foo",
@@ -149,6 +171,45 @@ describe("AtInternet provider unit testing", function () {
                     level2: 1,
                     countryCode: "defaultCountry",
                     customVars: { site: { 2: "[defaultCountry]" } }
+                });
+                expect(tagMock.prototype.identifiedVisitor.set).not.toHaveBeenCalledWith({});
+            });
+
+            it("track page with identifiedVisitor defined", function () {
+                atInternet.setIdentifiedVisitor({
+                    id: 1234
+                });
+                atInternet.trackPage({
+                    name: "foo",
+                    level2: 1
+                });
+                expect(tagMock.prototype.page.send).toHaveBeenCalledWith({
+                    name: "foo",
+                    level2: 1,
+                    countryCode: "defaultCountry",
+                    customVars: { site: { 2: "[defaultCountry]" } }
+                });
+                expect(tagMock.prototype.identifiedVisitor.set).toHaveBeenCalledWith({
+                    id: 1234
+                });
+            });
+
+            it("track page with identifiedVisitor defined bad call", function () {
+                atInternet.setIdentifiedVisitor({
+                    id: 1234
+                });
+                atInternet.trackPage({
+                    name: "foo",
+                    level2: 1
+                });
+                expect(tagMock.prototype.page.send).toHaveBeenCalledWith({
+                    name: "foo",
+                    level2: 1,
+                    countryCode: "defaultCountry",
+                    customVars: { site: { 2: "[defaultCountry]" } }
+                });
+                expect(tagMock.prototype.identifiedVisitor.set).not.toHaveBeenCalledWith({
+                    id: 12345
                 });
             });
 

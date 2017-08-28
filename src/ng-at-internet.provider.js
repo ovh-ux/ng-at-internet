@@ -20,9 +20,10 @@ angular.module("ng-at-internet")
     .provider("atInternet", function (AT_INTERNET_CUSTOM_VARS) {
 
         var config = {
-            enabled: false,    // enable or disable tracking
-            debug: false,      // enable or disable logging tracking in JS console
-            defaults: {}       // default data to be sent with each hit
+            enabled: false,            // enable or disable tracking
+            debug: false,              // enable or disable logging tracking in JS console
+            identifiedVisitor: {},     // set custom id for identifiedVisitor
+            defaults: {}               // default data to be sent with each hit
         };
 
     // reference to ATInternet Tag object from their JS library
@@ -62,6 +63,18 @@ angular.module("ng-at-internet")
      */
         this.setDebug = function (state) {
             config.debug = state;
+        };
+
+    /**
+     * @ngdoc function
+     * @name atInternet.setIdentifiedVisitor
+     * @methodOf atInternetProvider
+     * @param {Object} def identifiedVisitor id to be sent.
+     * @description
+     * Set identifiedVisitor to get.
+     */
+        this.setIdentifiedVisitor = function (identifiedVisitor) {
+            config.identifiedVisitor = identifiedVisitor;
         };
 
         this.$get = function ($window, $log) {
@@ -185,6 +198,18 @@ angular.module("ng-at-internet")
 
             /**
              * @ngdoc function
+             * @name atInternet.setIdentifiedVisitor
+             * @methodOf atInternetProvider
+             * @param {Object} def identifiedVisitor id to be sent.
+             * @description
+             * Set identifiedVisitor to get.
+             */
+                setIdentifiedVisitor: function (identifiedVisitor) {
+                    config.identifiedVisitor = identifiedVisitor;
+                },
+
+            /**
+             * @ngdoc function
              * @name atInternet.setEnabled
              * @methodOf atInternet
              * @param {Boolean} state True to enable tracking, false otherwise.
@@ -242,13 +267,14 @@ angular.module("ng-at-internet")
                         updateData(pageData);
 
                         if (pageData.name) {
-
                             var customVars = {};
                             _.forOwn(AT_INTERNET_CUSTOM_VARS, function (conf, attr) {
                                 updateCustomVars(config.defaults, conf, attr, customVars);
                             });
                             pageData.customVars = customVars;
-
+                            if (!_.isEmpty(config.identifiedVisitor)) {
+                                atinternetTag.identifiedVisitor.set(config.identifiedVisitor);
+                            }
                             atinternetTag.page.send(pageData);
 
                             logDebugInfos("atinternet.trackpage: ", pageData);
@@ -347,6 +373,11 @@ angular.module("ng-at-internet")
                         var orderId = productData.orderId || getUniqueId();
                         var cartId = "cart-" + orderId;
 
+                    // set the identifiedVisitor tag to send the custom id of the visitor
+                        if (!_.isEmpty(config.identifiedVisitor)) {
+                            atinternetTag.identifiedVisitor.set(config.identifiedVisitor);
+                        }
+
                     // set the current page (page must be configured as "main objective" in ATInternet manager!)
                         atinternetTag.page.set({
                             name: productData.page,
@@ -425,6 +456,10 @@ angular.module("ng-at-internet")
                             name: eventData.page,
                             level2: eventData.level2
                         });
+
+                        if (!_.isEmpty(config.identifiedVisitor)) {
+                            atinternetTag.identifiedVisitor.set(config.identifiedVisitor);
+                        }
 
                         atinternetTag.customVars.set(getCustomVarsWithDefaults(eventData));
 

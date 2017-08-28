@@ -49,6 +49,7 @@ Example provider configuration
 app.config(["atInternetProvider", function(provider) {
     provider.setEnabled(true); // enable tracking
     //provider.setDebug(true);
+    provider.setIdentifiedVisitor({id : 12345}); // it is recommended to set it, if not set
     provider.setDefaults({ level2: "1"}); // it is recommended to specify the level2 attribute as a default value
                                           // since it is global to your project and it must be send allong with
                                           // every tracking data
