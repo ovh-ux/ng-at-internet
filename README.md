@@ -43,7 +43,7 @@ Please see : http://developers.atinternet-solutions.com/accueil/
 
 ## Provider configuration
 
-Example provider configuration
+*Example simple provider configuration*
 
 ```javascript
 app.config(["atInternetProvider", function(provider) {
@@ -57,38 +57,64 @@ app.config(["atInternetProvider", function(provider) {
 
 Please note that the level2 attribute must be your project ID ; configured in ATInternet manager.
 
+*Exemple provider configuration with identifiedVisitor set.*
+
+```javascript
+app.config(["atInternetProvider", function(provider) {
+    provider.setEnabled(true); // enable tracking
+    //provider.setDebug(true);
+    provider.setDefaults({ level2: "1",
+                           visitorId: "123"
+                          });
+}])
+```
+
+Notice that visitorId is optional and set identifiedVisitor.id ATInternet Tag.
+
 ## Page tracking
 
-Example of tracking a single page.
+*Example of tracking a single page.*
 
 ```javascript
 atInternet.trackPage({
     name: "my-page",  // page name
-    level2: "1"       // (optional) if not configured in defaults you must specify your project id
+    level2: "1",      // (optional) if not configured in defaults you must specify your project id
+    visitorId: "123"  // (optional) set identifiedVisitor.id sent with each hit
 });
 ```
 
 ## Click tracking
 
-Example of tracking a click action.
+*Example of tracking a click action.*
 
 ```javascript
 atInternet.trackClick({
     name: "my-click", // name of action
-    type: "action"    // Possible values : action/navigation/download/exit
-    level2: "1"       // (optional) if not configured in defaults you must specify your project id
+    type: "action",   // event type (optional) Possible values : action/navigation/download/exit
+    level2: "1",      // (optional) if not configured in defaults you must specify your project id
+    visitorId: "123"  // (optional) set identifiedVisitor.id sent with each hit
 });
 ```
 Tracking using the directive :
 
+Attributes
+  - `track-on` : event to track (click, onFinish, onchange, etc)
+  - `track-name` : Name of action (optional) Id will be used if absent
+  - `track-type` : event type (optional) Possible values : action/navigation/download/exit
+
+
 ```html
-<button at-internet-click="{ name: 'foo' }" ng-click="clickMe()">ClickMe</button>
-<a target="#" at-internet-click="{ name: 'foo' }">ClickMe</a>
+<button id="btnAction" data-track-on="click"></button>
+Tracking result: {name: "btnAction-click", type: "action"...}
+
+<button data-track-on="mouseover" data-track-name="MyAction" data-track-type="navigation"></button>
+Tracking result: {name: "MyAction", type: "navigation"...}
+
 ```
 
 ## Order tracking
 
-Example of tracking a successfull order.
+*Example of tracking a successfull order.*
 
 ```javascript
 /**
@@ -99,17 +125,21 @@ atInternet.trackOrder({
     name: "my-product",   // name of your product
     price: 42,            // taxes included product price
     //priceTaxFree: 42,   // price tax free
-    level2: "1"           // (optional) if not configured in defaults you must specify your project id
+    level2: "1",          // (optional) if not configured in defaults you must specify your project id
+    visitorId: "123"      // (optional) set identifiedVisitor.id sent with each hit
 });
 ```
 
-Example of tracking a custom event.
+## Event tracking
+
+*Example of tracking a custom event.*
 
 ```javascript
 atInternet.trackEvent({
     page: "pageName",   // page that raised the event
     event: "eventName", // raised event
-    level2: "1"         // (optional) if not configured in defaults you must specify your project id
+    level2: "1",        // (optional) if not configured in defaults you must specify your project id
+    visitorId: "123"  // (optional) set identifiedVisitor.id sent with each hit
 });
 ```
 
